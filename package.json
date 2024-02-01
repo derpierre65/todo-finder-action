@@ -1,0 +1,23 @@
+{
+  "name": "todo-finder-action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "action/index.js",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "ncc build index.js --out action --minify --license licenses.txt"
+  },
+  "dependencies": {
+    "@actions/core": "^1.8.2",
+    "@actions/github": "^5.0.3",
+    "leasot": "^13.3.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.34.0",
+    "async": "^3.2.5",
+    "globby": "^14.0.0"
+  }
+}

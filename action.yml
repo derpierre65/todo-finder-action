@@ -1,0 +1,38 @@
+name: 'Todo Finder'
+description: 'Find todo or fixme comments and post it via reviewdog into your pull request.'
+branding:
+  icon: send
+  color: blue
+inputs:
+  scandir:
+    description: 'Scan specified files for "todo" or "fixme" annotations.'
+    required: false
+    default: './**/*'
+  severity:
+    description: 'TODO [0=info,1=warning,2=error]'
+    default: '2'
+  workdir:
+    description: 'Working directory relative to the root directory.'
+    default: '.'
+  level:
+    description: 'Report level for reviewdog [info,warning,error]'
+    default: 'error'
+  filter_mode:
+    description: |
+      Filtering mode for the reviewdog command [added,diff_context,file,nofilter].
+      Default is added.
+    default: 'added'
+  fail_on_error:
+    description: |
+      Exit code for reviewdog when errors are found [true,false]
+      Default is `false`.
+    default: 'false'
+  reporter:
+    description: 'Reporter of reviewdog command [github-pr-check,github-pr-review].'
+    default: 'github-pr-review'
+  reviewdog_flags:
+    description: 'Additional reviewdog flags'
+    default: ''
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
