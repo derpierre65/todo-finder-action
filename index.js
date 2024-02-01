@@ -26,9 +26,6 @@ const rdjson = {
 try {
   const { reportTodo } = reportTodoPackage;
 
-  console.log('scnadir:', core.getInput('scandir') || './src/**/*')
-  console.log('severity:', core.getInput('severity'));
-
   const labels = JSON.parse(await reportTodo(core.getInput('scandir') || './src/**/*', {
     reportMode: 'json',
   }));
