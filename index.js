@@ -26,6 +26,9 @@ const rdjson = {
 try {
   const { reportTodo } = reportTodoPackage;
 
+  console.log(process.cwd());
+  console.log(path.dirname(process.cwd()));
+
   const labels = JSON.parse(await reportTodo(core.getInput('scandir') || './src/**/*', {
     reportMode: 'json',
   }));
