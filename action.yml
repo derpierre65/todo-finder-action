@@ -4,6 +4,9 @@ branding:
   icon: send
   color: blue
 inputs:
+  github_token:
+    description: 'GITHUB_TOKEN'
+    default: '${{ github.token }}'
   scandir:
     description: 'Scan specified files for "todo" or "fixme" annotations.'
     required: false
