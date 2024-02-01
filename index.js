@@ -31,7 +31,6 @@ try {
 
   for ( const label of labels ) {
     for ( const match of label.matches ) {
-      console.log(match);
       rdjson.diagnostics.push({
         location: {
           path: path.join(path.dirname(fileURLToPath(import.meta.url)), match.filePath),
