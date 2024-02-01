@@ -1,6 +1,4 @@
-// import { execSync } from 'child_process';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import core from '@actions/core';
 import reportTodoPackage from 'report-todo';
 
@@ -29,11 +27,12 @@ try {
     reportMode: 'json',
   }));
 
-  for ( const label of labels ) {
-    for ( const match of label.matches ) {
+  const cwdPath = process.cwd();
+  for (const label of labels) {
+    for (const match of label.matches) {
       rdjson.diagnostics.push({
         location: {
-          path: path.join(path.dirname(fileURLToPath(import.meta.url)), match.filePath),
+          path: path.join(cwdPath, match.filePath),
           range: {
             start: {
               line: match.startLineNo,
@@ -41,26 +40,10 @@ try {
           }
         },
         severity: convertSeverity(parseInt(core.getInput('severity'))),
+        // original_output: 'No description',
       });
     }
   }
-
-  // leasot
-  // const json = JSON.parse(execSync('npx leasot "' + core.getInput('scandir') + '" --reporter json -x').toString());
-  // for (const todo of json) {
-  //   rdjson.diagnostics.push({
-  //     location: {
-  //       path: path.join(path.dirname(fileURLToPath(import.meta.url)), todo.file),
-  //       range: {
-  //         start: {
-  //           line: todo.line,
-  //         },
-  //       }
-  //     },
-  //     severity: convertSeverity(parseInt(core.getInput('severity'))),
-  //     // original_output: todo.text || 'No description',
-  //   });
-  // }
 } catch (error) {
   console.error(`error: ${error.message}`);
   process.exit(1);
