@@ -26,14 +26,11 @@ const rdjson = {
 try {
   const { reportTodo } = reportTodoPackage;
 
-  console.log(process.cwd());
-  console.log(path.dirname(process.cwd()));
-
   const labels = JSON.parse(await reportTodo(core.getInput('scandir') || './src/**/*', {
     reportMode: 'json',
   }));
 
-  const cwdPath = path.dirname(process.cwd());
+  const cwdPath = process.cwd();
   for (const label of labels) {
     for (const match of label.matches) {
       rdjson.diagnostics.push({
