@@ -13,7 +13,8 @@
   "dependencies": {
     "@actions/core": "^1.8.2",
     "@actions/github": "^5.0.3",
-    "leasot": "^13.3.0"
+    "leasot": "^13.3.0",
+    "report-todo": "^1.0.1"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.34.0",

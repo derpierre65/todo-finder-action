@@ -1,7 +1,8 @@
-import { execSync } from 'child_process';
+// import { execSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import core from '@actions/core';
+import reportTodoPackage from 'report-todo';
 
 function convertSeverity(s) {
   if (s === 0) { // off
@@ -23,21 +24,44 @@ const rdjson = {
 };
 
 try {
-  const json = JSON.parse(execSync('npx leasot "' + core.getInput('scandir') + '" --reporter json -x').toString());
-  for (const todo of json) {
-    rdjson.diagnostics.push({
-      location: {
-        path: path.join(path.dirname(fileURLToPath(import.meta.url)), todo.file),
-        range: {
-          start: {
-            line: todo.line,
-          },
-        }
-      },
-      severity: convertSeverity(parseInt(core.getInput('severity'))),
-      // original_output: todo.text || 'No description',
-    });
+  const { reportTodo } = reportTodoPackage;
+  const labels = JSON.parse(await reportTodo(core.getInput('scandir') || './src/**/*', {
+    reportMode: 'json',
+  }));
+
+  for ( const label of labels ) {
+    for ( const match of label.matches ) {
+      console.log(match);
+      rdjson.diagnostics.push({
+        location: {
+          path: path.join(path.dirname(fileURLToPath(import.meta.url)), match.filePath),
+          range: {
+            start: {
+              line: match.startLineNo,
+            },
+          }
+        },
+        severity: convertSeverity(parseInt(core.getInput('severity'))),
+      });
+    }
   }
+
+  // leasot
+  // const json = JSON.parse(execSync('npx leasot "' + core.getInput('scandir') + '" --reporter json -x').toString());
+  // for (const todo of json) {
+  //   rdjson.diagnostics.push({
+  //     location: {
+  //       path: path.join(path.dirname(fileURLToPath(import.meta.url)), todo.file),
+  //       range: {
+  //         start: {
+  //           line: todo.line,
+  //         },
+  //       }
+  //     },
+  //     severity: convertSeverity(parseInt(core.getInput('severity'))),
+  //     // original_output: todo.text || 'No description',
+  //   });
+  // }
 } catch (error) {
   console.error(`error: ${error.message}`);
   process.exit(1);
