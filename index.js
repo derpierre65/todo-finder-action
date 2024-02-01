@@ -25,12 +25,16 @@ const rdjson = {
 
 try {
   const { reportTodo } = reportTodoPackage;
+
+  console.log('scnadir:', core.getInput('scandir') || './src/**/*')
+  console.log('severity:', core.getInput('severity'));
+
   const labels = JSON.parse(await reportTodo(core.getInput('scandir') || './src/**/*', {
     reportMode: 'json',
   }));
 
-  for ( const label of labels ) {
-    for ( const match of label.matches ) {
+  for (const label of labels) {
+    for (const match of label.matches) {
       rdjson.diagnostics.push({
         location: {
           path: path.join(path.dirname(fileURLToPath(import.meta.url)), match.filePath),
@@ -41,6 +45,7 @@ try {
           }
         },
         severity: convertSeverity(parseInt(core.getInput('severity'))),
+        original_output: 'No description',
       });
     }
   }

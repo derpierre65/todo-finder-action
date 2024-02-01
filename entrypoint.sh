@@ -8,6 +8,8 @@ fi
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
+node /action/index.js
+
 node /action/index.js | reviewdog -f=rdjson \
   -f.diff.strip=0 \
   -name="todo-finder" \
