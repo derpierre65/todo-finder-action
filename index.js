@@ -1,6 +1,6 @@
 // import { execSync } from 'child_process';
 import path from 'path';
-import { fileURLToPath } from 'url';
+// import { fileURLToPath } from 'url';
 import core from '@actions/core';
 import reportTodoPackage from 'report-todo';
 
@@ -33,11 +33,12 @@ try {
     reportMode: 'json',
   }));
 
+  const cwdPath = path.dirname(process.cwd());
   for (const label of labels) {
     for (const match of label.matches) {
       rdjson.diagnostics.push({
         location: {
-          path: path.join(path.dirname(fileURLToPath(import.meta.url)), match.filePath),
+          path: path.join(cwdPath, match.filePath),
           range: {
             start: {
               line: match.startLineNo,
@@ -45,7 +46,7 @@ try {
           }
         },
         severity: convertSeverity(parseInt(core.getInput('severity'))),
-        original_output: 'No description',
+        // original_output: 'No description',
       });
     }
   }
